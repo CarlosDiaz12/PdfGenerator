@@ -12,6 +12,7 @@ namespace PdfGenerator
         public long NumeroCheque { get; set; }
         public string ConceptoPago { get; set; }
         public string NombreCliente { get; set; }
+        public string IdentificacionCliente { get; set; }
         public DateTime FechaPago { get; set; }
         public double Monto { get; set; }
         public string MontoLetra { get; set; }

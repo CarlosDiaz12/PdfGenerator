@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PdfGenerator.Data;
 using Image = iTextSharp.text.Image;
+using System.Diagnostics;
 
 namespace PdfGenerator
 {
@@ -26,10 +27,9 @@ namespace PdfGenerator
             GetInfoFromDb(noCheque);
         }
 
-        private Cheque GetData(string noCheque)
+        private Cheque GetData(string idCliente)
         {
-            long value = Convert.ToInt64(noCheque);
-            return appDbContext.Cheques.FirstOrDefault(x => x.NumeroCheque == value);
+            return appDbContext.Cheques.FirstOrDefault(x => x.IdentificacionCliente == idCliente);
         }
 
         void GetInfoFromDb(string noCheque)
@@ -96,7 +96,7 @@ namespace PdfGenerator
 
 
                 var montoLetra = new Paragraph();
-                montoLetra.Add(new Paragraph(info.MontoLetra + "PESOS DOMINICANOS"));
+                montoLetra.Add(new Paragraph(info.MontoLetra + " PESOS DOMINICANOS"));
 
                 table3.AddCell(new PdfPCell(montoLetra) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
 
@@ -106,6 +106,16 @@ namespace PdfGenerator
 
                 document.Close();
                 ms.Close();
+
+
+                // abrir archivo
+                Process p = new Process();
+                p.StartInfo.FileName = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
+                p.StartInfo.WorkingDirectory = Environment.CurrentDirectory;
+                p.StartInfo.Arguments = Path.Combine(Environment.CurrentDirectory, $"file.pdf");
+                p.Start();
+
+                Environment.Exit(0);
             }
             catch (Exception ex)
             {
